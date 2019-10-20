@@ -22,6 +22,16 @@ shinyServer(
           polygon(d, col="red", border="blue")
           x=0:input$n
           plot(x,dbinom(x, input$n, input$p))
+        },
+
+        'poisson' = {
+          par(mfrow=c(1,2))
+          D=rpois(input$s, input$lam)
+          tab=table(D)
+          barplot(tab,col='blue')
+          x1=0:input$max
+          y1=dpois(x1,input$lam)
+          plot(x1,y1,type='b')
         }
       )
     })
@@ -35,6 +45,10 @@ shinyServer(
 
         'binomial' = {
           summary(rbinom(input$s, input$n, input$p))
+        },
+
+        'poisson' = {
+          summary(rpois(input$s, input$lam))
         }
       )
     })
@@ -47,7 +61,11 @@ shinyServer(
         },
 
         'binomial' = {
-          c(rbinom(input$s, input$n,input$p))
+          c(rbinom(input$s, input$n, input$p))
+        },
+
+        'poisson' = {
+          c(rpois(input$s, input$lam))
         }
       )
 
