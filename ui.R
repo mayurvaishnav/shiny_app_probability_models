@@ -45,6 +45,12 @@ shinyUI(pageWithSidebar(
         condition = "input.model == 'poisson'",
         numericInput("max", "Upper limit for x" , value = 5),
         numericInput("lam", "Parameter lambda in Poisson", value = 10)
+      ),
+
+      conditionalPanel(
+        condition = "input.model == 'geometric'",
+        numericInput("max", "Upper limit for x" , value = 5),
+        sliderInput("p", "Probability of successful trail(p)", min=0, max=1, step = 0.01, value = 0.5)
       )
 
     ),

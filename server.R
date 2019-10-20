@@ -32,6 +32,16 @@ shinyServer(
           x1=0:input$max
           y1=dpois(x1,input$lam)
           plot(x1,y1,type='b')
+        },
+
+        'geometric' = {
+          par(mfrow=c(1,2))
+          D=rgeom(input$s, input$p)
+          tab=table(D)
+          barplot(tab,col='blue')
+          x2=0:input$max
+          y2=dgeom(x2,input$p)
+          plot(x2,y2,type='b')
         }
       )
     })
@@ -49,6 +59,10 @@ shinyServer(
 
         'poisson' = {
           summary(rpois(input$s, input$lam))
+        },
+
+        'geometric' = {
+          summary(rgeom(input$s, input$p))
         }
       )
     })
@@ -66,6 +80,10 @@ shinyServer(
 
         'poisson' = {
           c(rpois(input$s, input$lam))
+        },
+
+        'geometric' = {
+          c(rgeom(input$s, input$p))
         }
       )
 
