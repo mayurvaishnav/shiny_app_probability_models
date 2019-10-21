@@ -4,169 +4,208 @@ shinyServer(
   function(input, output) {
 
     output$plot <- renderPlot({
-      
-      switch (input$model,
-        'bernoulli' = {
-          par(mfrow=c(1,2))
-          Density <- density(rbinom(input$s,1,input$p))
-          plot(Density, main="Kernel Density of generated data")
-          polygon(Density, col="red", border="blue")
-          x=0:1
-          plot(x,dbinom(x,1,input$p))
-        },
 
-        'binomial' = {
-          par(mfrow=c(1,2))
-          d <- density(rbinom(input$s, input$n, input$p))
-          plot(d, main="Kernel Density of generated data")
-          polygon(d, col="red", border="blue")
-          x=0:input$n
-          plot(x,dbinom(x, input$n, input$p))
-        },
+      if(input$modelType == 'discrete') {
+        switch (input$model,
+          'bernoulli' = {
+            par(mfrow=c(1,2))
+            Density <- density(rbinom(input$s,1,input$p))
+            plot(Density, main="Kernel Density of generated data")
+            polygon(Density, col="red", border="blue")
+            x=0:1
+            plot(x,dbinom(x,1,input$p))
+          },
 
-#        'multinomial' = {
-#          par(mfrow=c(1,2))
-#          d <- table(rmultinom(input$s, input$n, input$p))
-#          barplot(d, col='red')
-#          x=0:input$n
-#          y=dmultinom(x, input$n, input$p)
-#          plot(x,y, type='b')
-#        },
+          'binomial' = {
+            par(mfrow=c(1,2))
+            d <- density(rbinom(input$s, input$n, input$p))
+            plot(d, main="Kernel Density of generated data")
+            polygon(d, col="red", border="blue")
+            x=0:input$n
+            plot(x,dbinom(x, input$n, input$p))
+          },
 
-        'poisson' = {
-          par(mfrow=c(1,2))
-          D=rpois(input$s, input$lam)
-          tab=table(D)
-          barplot(tab,col='blue')
-          x1=0:input$max
-          y1=dpois(x1,input$lam)
-          plot(x1,y1,type='b')
-        },
+  #        'multinomial' = {
+  #          par(mfrow=c(1,2))
+  #          d <- table(rmultinom(input$s, input$n, input$p))
+  #          barplot(d, col='red')
+  #          x=0:input$n
+  #          y=dmultinom(x, input$n, input$p)
+  #          plot(x,y, type='b')
+  #        },
 
-        'geometric' = {
-          par(mfrow=c(1,2))
-          D=rgeom(input$s, input$p)
-          tab=table(D)
-          barplot(tab,col='blue')
-          x2=0:input$max
-          y2=dgeom(x2,input$p)
-          plot(x2,y2,type='b')
-        },
+          'poisson' = {
+            par(mfrow=c(1,2))
+            D=rpois(input$s, input$lam)
+            tab=table(D)
+            barplot(tab,col='blue')
+            x1=0:input$max
+            y1=dpois(x1,input$lam)
+            plot(x1,y1,type='b')
+          },
 
-        'hypergeometric' = {
-          par(mfrow=c(1,2))
-          D=rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s))
-          tab=table(D)
-          barplot(tab,col='blue')
-          x2=0:input$s
-          y2=dhyper(x2, m=input$m, n=input$n, k=input$k, log=FALSE)
-          plot(x2,y2,type='b')
-        },
+          'geometric' = {
+            par(mfrow=c(1,2))
+            D=rgeom(input$s, input$p)
+            tab=table(D)
+            barplot(tab,col='blue')
+            x2=0:input$max
+            y2=dgeom(x2,input$p)
+            plot(x2,y2,type='b')
+          },
 
-        'uniform' = {
-        },
+          'hypergeometric' = {
+            par(mfrow=c(1,2))
+            D=rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s))
+            tab=table(D)
+            barplot(tab,col='blue')
+            x2=0:input$s
+            y2=dhyper(x2, m=input$m, n=input$n, k=input$k, log=FALSE)
+            plot(x2,y2,type='b')
+          }
+        )
+      }
 
-        'normal' = {
-        },
+      if(input$modelType == 'continuous') {
+        switch (input$modelCont,
+          'uniform' = {
+            a <- input$a
+            b <- input$b
+            n1 <- input$s
+            rand.unif <- runif(n1, min = a, max = b)
+            hist(rand.unif,
+                 freq = FALSE,
+                 xlab = 'x',
+                 ylim = c(0, 0.4),
+                 xlim = c(-3,3),
+                 density = 20,
+                 main = "Uniform distribution")
+            curve(dunif(x, min = a, max = b),
+                  from = -3, to = 3,
+                  n = n1,
+                  col = "darkblue",
+                  lwd = 2,
+                  add = TRUE,
+                  yaxt = "n",
+                  ylab = 'probability')
+          },
 
-        'exponential' = {
-        },
+          'normal' = {
+            par(mfrow=c(1,2))
+            x=seq(-input$i,input$i,0.01)
+            plot(x,dnorm(x,input$mu,input$sigma),type='l', col='red')
+          },
 
-        'gamma' = {
-        },
+          'exponential' = {
+          },
 
-        'chisquared' = {
-        }
-      )
+          'gamma' = {
+          },
+
+          'chisquared' = {
+          }
+        )
+      }
     })
 
     output$summary <- renderPrint({
 
-      switch (input$model,
-        'bernoulli' = {
-          summary(rbinom(input$s, 1, input$p))
-        },
+      if(input$modelType == 'discrete') {
+        switch (input$model,
+          'bernoulli' = {
+            summary(rbinom(input$s, 1, input$p))
+          },
 
-        'binomial' = {
-          summary(rbinom(input$s, input$n, input$p))
-        },
+          'binomial' = {
+            summary(rbinom(input$s, input$n, input$p))
+          },
 
-#        'multinomial' = {
-#          summary(rmultinom(input$s, input$n, input$p))
-#        },
+  #        'multinomial' = {
+  #          summary(rmultinom(input$s, input$n, input$p))
+  #        },
 
-        'poisson' = {
-          summary(rpois(input$s, input$lam))
-        },
+          'poisson' = {
+            summary(rpois(input$s, input$lam))
+          },
 
-        'geometric' = {
-          summary(rgeom(input$s, input$p))
-        },
+          'geometric' = {
+            summary(rgeom(input$s, input$p))
+          },
 
-        'hypergeometric' = {
-          summary(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
-        },
+          'hypergeometric' = {
+            summary(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
+          }
+        )
+      }
 
-        'uniform' = {
-        },
+      if(input$modelType == 'continuous') {
+        switch (input$modelCont,
+          'uniform' = {
+          },
 
-        'normal' = {
-        },
+          'normal' = {
+          },
 
-        'exponential' = {
-        },
+          'exponential' = {
+          },
 
-        'gamma' = {
-        },
+          'gamma' = {
+          },
 
-        'chisquared' = {
-        }
-      )
+          'chisquared' = {
+          }
+        )
+      }
     })
 
     output$table <- renderTable({
 
-      switch (input$model,
-        'bernoulli' = {
-          c(rbinom(input$s,1,input$p))
-        },
+      if(input$modelType == 'discrete') {
+        switch (input$model,
+          'bernoulli' = {
+            c(rbinom(input$s,1,input$p))
+          },
 
-        'binomial' = {
-          c(rbinom(input$s, input$n, input$p))
-        },
+          'binomial' = {
+            c(rbinom(input$s, input$n, input$p))
+          },
 
-#        'multinomial' = {
-#          c(rmultinom(input$s, input$n, input$p))
-#        },
+  #        'multinomial' = {
+  #          c(rmultinom(input$s, input$n, input$p))
+  #        },
 
-        'poisson' = {
-          c(rpois(input$s, input$lam))
-        },
+          'poisson' = {
+            c(rpois(input$s, input$lam))
+          },
 
-        'geometric' = {
-          c(rgeom(input$s, input$p))
-        },
+          'geometric' = {
+            c(rgeom(input$s, input$p))
+          },
 
-        'hypergeometric' = {
-          c(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
-        },
+          'hypergeometric' = {
+            c(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
+          }
+        )
+      }
 
-        'uniform' = {
-        },
+      if(input$modelType == 'continuous') {
+        switch (input$modelCont,
+          'uniform' = {
+          },
 
-        'normal' = {
-        },
+          'normal' = {
+          },
 
-        'exponential' = {
-        },
+          'exponential' = {
+          },
 
-        'gamma' = {
-        },
+          'gamma' = {
+          },
 
-        'chisquared' = {
-        }
-      )
-
+          'chisquared' = {
+          }
+        )
+      }
     })
   }
 )

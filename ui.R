@@ -71,7 +71,7 @@ shinyUI(pageWithSidebar(
     conditionalPanel(
       condition = "input.modelType == 'continuous'",
 
-      selectInput("model", "Select Model",
+      selectInput("modelCont", "Select Model",
         choices = c(
           "Uniform" = "uniform",
           "Normal" = "normal",
@@ -82,8 +82,13 @@ shinyUI(pageWithSidebar(
         selected = "uniform"
       ),
 
+      sliderInput("s", "Number of simulated data" ,min=1, max=1000, value = 10),
+      numericInput("i", "Support" , value = 2),
+
       conditionalPanel(
-        condition = "input.model == 'uniform'"
+        condition = "input.modelCont == 'uniform'",
+        numericInput("a", "Parameter a in Normal" , value = -2),
+        numericInput("b", "Parameter b in Normal" , value = 0.8)
       ),
 
       conditionalPanel(
