@@ -51,6 +51,16 @@ shinyServer(
           x2=0:input$max
           y2=dgeom(x2,input$p)
           plot(x2,y2,type='b')
+        },
+
+        'hypergeometric' = {
+          par(mfrow=c(1,2))
+          D=rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s))
+          tab=table(D)
+          barplot(tab,col='blue')
+          x2=0:input$s
+          y2=dhyper(x2, m=input$m, n=input$n, k=input$k, log=FALSE)
+          plot(x2,y2,type='b')
         }
       )
     })
@@ -76,6 +86,10 @@ shinyServer(
 
         'geometric' = {
           summary(rgeom(input$s, input$p))
+        },
+
+        'hypergeometric' = {
+          summary(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
         }
       )
     })
@@ -101,6 +115,10 @@ shinyServer(
 
         'geometric' = {
           c(rgeom(input$s, input$p))
+        },
+
+        'hypergeometric' = {
+          c(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
         }
       )
 

@@ -28,7 +28,7 @@ shinyUI(pageWithSidebar(
         selected = "bernoulli"
       ),
 
-      sliderInput("s", "Number of simulated data(s)", min=1, max=1000, value = 100),
+      sliderInput("s", "Number of simulated data(s)", min=1, max=1000, value = 10),
 
       conditionalPanel(
         condition = "input.model == 'bernoulli'",
@@ -57,6 +57,13 @@ shinyUI(pageWithSidebar(
         condition = "input.model == 'geometric'",
         numericInput("max", "Upper limit for x" , value = 5),
         sliderInput("p", "Probability of successful trail(p)", min=0, max=1, step = 0.01, value = 0.5)
+      ),
+
+      conditionalPanel(
+        condition = "input.model == 'hypergeometric'",
+        numericInput("m", "M" , value = 10),
+        numericInput("n", "N" , value = 20),
+        numericInput("k", "K" , value = 5)
       )
 
     ),
