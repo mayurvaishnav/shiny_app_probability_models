@@ -61,6 +61,21 @@ shinyServer(
           x2=0:input$s
           y2=dhyper(x2, m=input$m, n=input$n, k=input$k, log=FALSE)
           plot(x2,y2,type='b')
+        },
+
+        'uniform' = {
+        },
+
+        'normal' = {
+        },
+
+        'exponential' = {
+        },
+
+        'gamma' = {
+        },
+
+        'chisquared' = {
         }
       )
     })
@@ -90,6 +105,21 @@ shinyServer(
 
         'hypergeometric' = {
           summary(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
+        },
+
+        'uniform' = {
+        },
+
+        'normal' = {
+        },
+
+        'exponential' = {
+        },
+
+        'gamma' = {
+        },
+
+        'chisquared' = {
         }
       )
     })
@@ -119,6 +149,21 @@ shinyServer(
 
         'hypergeometric' = {
           c(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
+        },
+
+        'uniform' = {
+        },
+
+        'normal' = {
+        },
+
+        'exponential' = {
+        },
+
+        'gamma' = {
+        },
+
+        'chisquared' = {
         }
       )
 

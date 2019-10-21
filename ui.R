@@ -80,6 +80,26 @@ shinyUI(pageWithSidebar(
           "Chi-squared" = "chisquared"
         ),
         selected = "uniform"
+      ),
+
+      conditionalPanel(
+        condition = "input.model == 'uniform'"
+      ),
+
+      conditionalPanel(
+        condition = "input.model == 'normal'"
+      ),
+
+      conditionalPanel(
+        condition = "input.model == 'exponential'"
+      ),
+
+      conditionalPanel(
+        condition = "input.model == 'gamma'"
+      ),
+
+      conditionalPanel(
+        condition = "input.model == 'chisquared'"
       )
 
     )
