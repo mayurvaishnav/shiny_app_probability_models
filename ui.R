@@ -87,24 +87,27 @@ shinyUI(pageWithSidebar(
 
       conditionalPanel(
         condition = "input.modelCont == 'uniform'",
-        numericInput("a", "Parameter a in Normal" , value = -2),
-        numericInput("b", "Parameter b in Normal" , value = 0.8)
+        numericInput("a", "Parameter a in Uniform" , value = -2),
+        numericInput("b", "Parameter b in Uniform" , value = 0.8)
       ),
 
       conditionalPanel(
-        condition = "input.model == 'normal'"
+        condition = "input.modelCont == 'normal'",
+        numericInput("mu", "Parameter mu in Normal" , value = 0),
+        numericInput("sigma", "Parameter sigma in Normal" , value = 1)
       ),
 
       conditionalPanel(
-        condition = "input.model == 'exponential'"
+        condition = "input.modelCont == 'exponential'",
+        numericInput("lam", "Parameter lambda in exponential" , value = 1)
       ),
 
       conditionalPanel(
-        condition = "input.model == 'gamma'"
+        condition = "input.modelCont == 'gamma'"
       ),
 
       conditionalPanel(
-        condition = "input.model == 'chisquared'"
+        condition = "input.modelCont == 'chisquared'"
       )
 
     )

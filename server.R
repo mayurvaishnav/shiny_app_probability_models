@@ -97,6 +97,9 @@ shinyServer(
           },
 
           'exponential' = {
+            par(mfrow=c(1,2))
+            x=seq(0,input$i,0.01)
+            plot(x,dexp(x,input$lam),type='l',col='green')
           },
 
           'gamma' = {
@@ -144,9 +147,13 @@ shinyServer(
           },
 
           'normal' = {
+            c(pnorm(input$s,input$mu, input$sigma))
+            summary(rnorm(input$s,input$mu, input$sigma))
           },
 
           'exponential' = {
+            c(pexp(input$s,input$lam))
+            summary(rexp(input$s,input$lam))
           },
 
           'gamma' = {
@@ -194,9 +201,11 @@ shinyServer(
           },
 
           'normal' = {
+            c(rnorm(input$s,input$mu, input$sigma))
           },
 
           'exponential' = {
+            c(rexp(input$s,input$lam))
           },
 
           'gamma' = {
