@@ -103,7 +103,9 @@ shinyUI(pageWithSidebar(
       ),
 
       conditionalPanel(
-        condition = "input.modelCont == 'gamma'"
+        condition = "input.modelCont == 'gamma'",
+        numericInput("sigma", "Parameter sigma in Gamma" , value = 1),
+        numericInput("lam", "Parameter lambda in Gamma" , value = 1)
       ),
 
       conditionalPanel(

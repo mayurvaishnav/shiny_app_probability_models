@@ -103,6 +103,9 @@ shinyServer(
           },
 
           'gamma' = {
+            par(mfrow=c(1,2))
+            x=seq(0,input$i,0.01)
+            plot(x,dgamma(x,input$sigma,input$lam),type='l',col='blue')
           },
 
           'chisquared' = {
@@ -157,6 +160,7 @@ shinyServer(
           },
 
           'gamma' = {
+            summary(rgamma(input$s,input$sigma,input$lam))
           },
 
           'chisquared' = {
@@ -209,6 +213,7 @@ shinyServer(
           },
 
           'gamma' = {
+            c(rgamma(input$s,input$sigma,input$lam))
           },
 
           'chisquared' = {
