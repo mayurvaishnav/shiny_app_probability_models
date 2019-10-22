@@ -109,6 +109,9 @@ shinyServer(
           },
 
           'chisquared' = {
+            par(mfrow=c(1,2))
+            x=seq(0,input$i,0.01)
+            plot(x,dchisq(x,input$k),type='l',col='black')
           }
         )
       }
@@ -147,6 +150,7 @@ shinyServer(
       if(input$modelType == 'continuous') {
         switch (input$modelCont,
           'uniform' = {
+            summary(runif(input$s,input$a, input$b))
           },
 
           'normal' = {
@@ -164,6 +168,7 @@ shinyServer(
           },
 
           'chisquared' = {
+            summary(rchisq(input$s,input$k))
           }
         )
       }
@@ -202,6 +207,7 @@ shinyServer(
       if(input$modelType == 'continuous') {
         switch (input$modelCont,
           'uniform' = {
+            c(runif(input$s,input$a, input$b))
           },
 
           'normal' = {
@@ -217,6 +223,7 @@ shinyServer(
           },
 
           'chisquared' = {
+            c(rchisq(input$s,input$k))
           }
         )
       }

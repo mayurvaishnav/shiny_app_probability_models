@@ -109,7 +109,8 @@ shinyUI(pageWithSidebar(
       ),
 
       conditionalPanel(
-        condition = "input.modelCont == 'chisquared'"
+        condition = "input.modelCont == 'chisquared'",
+        numericInput("k", "Parameter K in Gamma" , value = 1)
       )
 
     )
