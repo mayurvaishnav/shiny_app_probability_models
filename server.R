@@ -1,7 +1,7 @@
 library(shiny)
 
 shinyServer(
-  function(input, output) {
+  function(input, output, session) {
 
     output$plot <- renderPlot({
 
@@ -227,6 +227,72 @@ shinyServer(
           }
         )
       }
+    })
+
+    myData <- reactive({
+      file1 <- input$datafile
+
+      if (is.null(file1)) {
+        return()
+      }
+
+      data = read.csv(file=file1$datapath)
+      data
+
+    })
+
+    observe({
+      updateSelectInput(session, inputId = "pred_columns", choices = colnames(myData()))
+    })
+
+    output$extdata = DT::renderDataTable({
+      extdata <- myData()
+      DT::datatable(extdata, options = list(lengthChange = TRUE))
+    })
+
+
+    output$prediction <- renderPrint({
+
+         print(paste('Selected Column : ',input$pred_columns))
+         df <- myData()
+         x <- df[,input$pred_columns]
+
+      switch (input$predmodel,
+        'bernoulli' = {
+        },
+
+        'binomial' = {
+        },
+
+       'multinomial' = {
+       },
+
+        'poisson' = {
+        },
+
+        'geometric' = {
+        },
+
+        'hypergeometric' = {
+        },
+
+        'uniform' = {
+        },
+
+        'normal' = {
+          print(paste('Predicted Value : ', mean(rnorm(input$s,mean(x), sd(x)))))
+        },
+
+        'exponential' = {
+          print(paste('Predicted Value : ', mean(rexp(input$s,1/mean(x)))))
+        },
+
+        'gamma' = {
+        },
+
+        'chisquared' = {
+        }
+      )
     })
   }
 )

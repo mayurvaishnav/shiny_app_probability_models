@@ -124,11 +124,55 @@ library(markdown)
                       tabPanel("Summary", verbatimTextOutput("summary")),
                       tabPanel("Table", tableOutput("table"))
           )
-        ),
+        )
       )
     ),
+
     tabPanel("Prediction",
-             #  verbatimTextOutput("summary")
+      headerPanel("Prediction next value"),
+      sidebarLayout(
+        sidebarPanel(
+          selectInput("predmodel", "Select Model",
+                      choices = c(
+                                  "Bernoulli" = "bernoulli",
+                                  "Binomial" = "binomial",
+                                  "Multinomial" = "multinomial",
+                                  "Poisson" = "poisson",
+                                  "Geometric" = "geometric",
+                                  "Hypergeometric" = "hypergeometric",
+                                  "Uniform" = "uniform",
+                                  "Normal" = "normal",
+                                  "Exponential" = "exponential",
+                                  "Gamma" = "gamma",
+                                  "Chi-squared" = "chisquared"
+                                ),
+                      selected = "bernoulli"
+          ),
+
+          # Input: Select a file ----
+
+          fileInput("datafile", "Choose CSV File",
+                    multiple = FALSE,
+                    accept = c("text/csv",
+                               "text/comma-separated-values,text/plain",
+                               ".csv")),
+
+          selectInput(inputId = "pred_columns", label = "Select a Column", choices = ""),
+
+          sliderInput("s", "Number of simulated data" ,min=1, max=1000, value = 100),
+
+          conditionalPanel(
+            condition = "input.conmodel == 'uniform'"
+          )
+        ),
+
+        mainPanel(
+          tabsetPanel(type = "tabs",
+                      tabPanel("Data", DT::dataTableOutput('extdata')),
+                      tabPanel("Prediction", verbatimTextOutput("prediction"))
+          )
+        )
+      )
     )
   )
 # ))
