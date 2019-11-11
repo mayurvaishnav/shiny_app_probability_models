@@ -135,16 +135,16 @@ library(markdown)
           selectInput("predmodel", "Select Model",
                       choices = c(
                                   "Bernoulli" = "bernoulli",
-                                  "Binomial" = "binomial",
-                                  "Multinomial" = "multinomial",
+                                  # "Binomial" = "binomial",
+                                  # "Multinomial" = "multinomial",
                                   "Poisson" = "poisson",
-                                  "Geometric" = "geometric",
-                                  "Hypergeometric" = "hypergeometric",
+                                  # "Geometric" = "geometric",
+                                  # "Hypergeometric" = "hypergeometric",
                                   "Uniform" = "uniform",
                                   "Normal" = "normal",
-                                  "Exponential" = "exponential",
-                                  "Gamma" = "gamma",
-                                  "Chi-squared" = "chisquared"
+                                  "Exponential" = "exponential"
+                                  # "Gamma" = "gamma",
+                                  # "Chi-squared" = "chisquared"
                                 ),
                       selected = "bernoulli"
           ),
