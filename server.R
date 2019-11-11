@@ -259,7 +259,8 @@ shinyServer(
 
       switch (input$predmodel,
         'bernoulli' = {
-          sim = rbinom(input$s, 1, mean(x))
+          phat=tab/sum(x)
+          sim = rbinom(input$s, 1, phat[2])
           if(mean(sim) > 0.5){
             pred = 1
           } else {
@@ -272,9 +273,10 @@ shinyServer(
           # print(paste('Predicted Value : ', mean(rbinom(input$s, length(x), mean(x)))))
         },
 
-       'multinomial' = {
+        'multinomial' = {
+          phat=x/sum(x)
           # print(paste('Predicted Value : ', mean(rmultinom(input$s, length(x), mean(x)))))
-       },
+        },
 
         'poisson' = {
           print(paste('Predicted Value : ', mean(rpois(input$s, 1/mean(x)))))
