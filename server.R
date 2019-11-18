@@ -230,14 +230,28 @@ shinyServer(
     })
 
     myData <- reactive({
-      file1 <- input$datafile
-
-      if (is.null(file1)) {
-        return()
-      }
-
-      data = read.csv(file=file1$datapath)
-      data
+      switch(input$predInputType,
+        'preFile' = {
+          file1 <- input$datafile
+          if (is.null(file1)) {
+            return()
+          }
+          data = read.csv(file=file1$datapath)
+          data
+        },
+        'preInbuild' = {
+          data = input$preInbuildFile
+          data
+        },
+        'preUrl' = {
+          data = read.csv(input$preUrl)
+          data
+        },
+        'preYahoo' = {
+          # data = read.csv(input$preUrl)
+          data
+        }
+      )
 
     })
 

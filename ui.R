@@ -149,13 +149,42 @@ library(markdown)
                       selected = "bernoulli"
           ),
 
-          # Input: Select a file ----
+          selectInput("predInputType", "Select Input",
+                      choices = c(
+                                  "File Input" = "preFile",
+                                  "Inbuild Datasets" = "preInbuild",
+                                  "URL" = "preUrl",
+                                  "Yahoo Finance" = "preYahoo"
+                                ),
+                      selected = "preFile"
+          ),
 
-          fileInput("datafile", "Choose CSV File",
+          conditionalPanel(
+            condition = "input.predInputType == 'preFile'",
+            # Input: Select a file ----
+            fileInput("datafile", "Choose CSV File",
                     multiple = FALSE,
                     accept = c("text/csv",
                                "text/comma-separated-values,text/plain",
-                               ".csv")),
+                               ".csv"))
+          ),
+
+          conditionalPanel(
+            condition = "input.predInputType == 'preInbuild'",
+            selectInput("preInbuildFile", "Select a Dataset",
+                        choices = ls("package:datasets"),
+            )
+          ),
+
+          conditionalPanel(
+            condition = "input.predInputType == 'preUrl'",
+            textInput('preUrl', 'Input URL', value="http://users.stat.ufl.edu/~winner/data/marij1.csv")
+          ),
+
+          conditionalPanel(
+            condition = "input.predInputType == 'preYahoo'",
+            textInput('preYahoo', 'Enter Ticket No', value="CTSH")
+          ),
 
           selectInput(inputId = "pred_columns", label = "Select a Column", choices = ""),
 
