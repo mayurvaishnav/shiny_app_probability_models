@@ -259,8 +259,8 @@ shinyServer(
 
       switch (input$predmodel,
         'bernoulli' = {
-          phat=tab/sum(x)
-          sim = rbinom(input$s, 1, phat[2])
+          p=mean(x)
+          sim = rbinom(input$s, 1, p)
           if(mean(sim) > 0.5){
             pred = 1
           } else {
