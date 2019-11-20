@@ -248,7 +248,7 @@ shinyServer(
           data
         },
         'preYahoo' = {
-          # data = read.csv(input$preUrl)
+          data = pdfetch_YAHOO(input$preYahoo, fields = c("open", "high", "low", "close", "adjclose", "volume"), from = as.Date("2019-01-01"))
           data
         }
       )
