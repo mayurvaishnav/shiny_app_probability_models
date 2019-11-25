@@ -301,25 +301,8 @@ shinyServer(
           print(paste('Predicted Value : ', pred))
         },
 
-        'binomial' = {
-          # print(paste('Predicted Value : ', mean(rbinom(input$s, length(x), mean(x)))))
-        },
-
-        'multinomial' = {
-          phat=x/sum(x)
-          # print(paste('Predicted Value : ', mean(rmultinom(input$s, length(x), mean(x)))))
-        },
-
         'poisson' = {
           print(paste('Predicted Value : ', mean(rpois(input$s, 1/mean(x)))))
-        },
-
-        'geometric' = {
-          # print(paste('Predicted Value : ', mean(rgeom(input$s, mean(x), sd(x)))))
-        },
-
-        'hypergeometric' = {
-          # print(paste('Predicted Value : ', mean(rnorm(input$s,mean(x), sd(x)))))
         },
 
         'uniform' = {
@@ -333,14 +316,6 @@ shinyServer(
         'exponential' = {
           print(paste('Predicted Value : ', mean(rexp(input$s, 1/mean(x)))))
         },
-
-        'gamma' = {
-          # print(paste('Predicted Value : ', mean(rexp(input$s,1/mean(x)))))
-        },
-
-        'chisquared' = {
-          # print(paste('Predicted Value : ', mean(rexp(input$s,1/mean(x)))))
-        }
       )
     })
   }
