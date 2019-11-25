@@ -318,5 +318,58 @@ shinyServer(
         },
       )
     })
+
+
+    hpData <- reactive({
+      switch(input$hpInputType,
+        'hpFile' = {
+          file1 <- input$datafile
+          if (is.null(file1)) {
+            return()
+          }
+          data = read.csv(file=file1$datapath)
+          data
+        },
+        'hpInbuild' = {
+          data = data.frame(get(input$hpInbuildFile))
+          data
+        },
+        'hpUrl' = {
+          data = read.csv(input$hpUrl)
+          data
+        },
+        'hpYahoo' = {
+          fromDate = Sys.Date() - 1*365;
+          out = pdfetch_YAHOO(input$hpYahoo, fields = c("open", "high", "low", "close", "adjclose", "volume"), from = fromDate)
+          stockData = data.frame(out)
+
+          tick_open <- paste(input$hpYahoo, sep = "", ".open")
+          tick_high <- paste(input$hpYahoo, sep = "", ".high")
+          tick_low <- paste(input$hpYahoo, sep = "", ".low")
+          tick_volume <- paste(input$hpYahoo, sep = "", ".volume")
+          tick_close <- paste(input$hpYahoo, sep = "", ".close")
+
+          # Renaming Columns
+          names(stockData)[names(stockData) == tick_open] <- "Open"
+          names(stockData)[names(stockData) == tick_high] <- "High"
+          names(stockData)[names(stockData) == tick_low] <- "Low"
+          names(stockData)[names(stockData) == tick_volume] <- "Volumn"
+          names(stockData)[names(stockData) == tick_close] <- "Close"
+
+          data = na.omit(stockData)
+          data
+        }
+      )
+
+    })
+
+    observe({
+      updateSelectInput(session, inputId = "hp_columns", choices = colnames(hpData()))
+    })
+
+    output$hpextdata = DT::renderDataTable({
+      extdata <- hpData()
+      DT::datatable(extdata, options = list(lengthChange = TRUE))
+    })
   }
 )
