@@ -252,7 +252,7 @@ library(markdown)
 
           selectInput(inputId = "hp_columns", label = "Select a Column", choices = ""),
 
-          sliderInput("hpSLevel", "Significance Level" ,min=0, max=1, value = 0.05, step=0.01),
+          sliderInput("hpAlpha", "Significance Level" ,min=0, max=1, value = 0.05, step=0.01),
 
           selectInput("hpalternative", "Select Alternative",
                       choices = c(
@@ -262,13 +262,17 @@ library(markdown)
                                 ),
                       selected = "less"
           ),
+
+          conditionalPanel(
+            condition = "input.hpalternative == 'two.sided'",
+            numericInput("hpMu", "Parameter mu in for Two sided" , value = 0),
+          )
         ),
 
         mainPanel(
           tabsetPanel(type = "tabs",
                       tabPanel("Data", DT::dataTableOutput('hpextdata')),
-                      tabPanel("Result", verbatimTextOutput("testResult")),
-                      tabPanel("C Values", verbatimTextOutput("cValues"))
+                      tabPanel("Result", verbatimTextOutput("testResult"))
           )
         )
       )

@@ -371,5 +371,38 @@ shinyServer(
       extdata <- hpData()
       DT::datatable(extdata, options = list(lengthChange = TRUE))
     })
+
+
+    output$testResult <- renderPrint({
+
+      df <- hpData()
+      x <- df[,input$hp_columns]
+      y <- df[,input$hp_columns_y]
+
+      switch (input$hpType,
+        'meanTest' = {
+          mu = 0
+          if(input$hpalternative == 'two.sided'){
+            mu = input$hpMu
+          }
+
+          test = t.test(x=x, mu=mu, alternative=input$hpalternative)
+
+          if(test$p.value < input$hpAlpha){
+            decision='Reject H_0'
+          }else{
+            decision='Accept H_0'
+          }
+
+          print(paste('Decision: ', decision))
+          if(input$hpalternative == 'two.sided'){
+            L=mean(x)-abs(qnorm(input$hpAlpha/2))*sd(x)/sqrt(length(x))
+            U=mean(x)+abs(qnorm(input$hpAlpha/2))*sd(x)/sqrt(length(x))
+            print(paste('Lower Limit : ', L))
+            print(paste('Higher Limit : ', U))
+          }
+        },
+      )
+    })
   }
 )
