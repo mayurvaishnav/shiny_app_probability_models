@@ -172,7 +172,7 @@ library(markdown)
           conditionalPanel(
             condition = "input.predInputType == 'preInbuild'",
             selectInput("preInbuildFile", "Select a Dataset",
-                        choices = ls("package:datasets"),
+                        choices = ls("package:datasets")
             )
           ),
 

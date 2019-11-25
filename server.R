@@ -240,7 +240,7 @@ shinyServer(
           data
         },
         'preInbuild' = {
-          data = input$preInbuildFile
+          data = data.frame(get(input$preInbuildFile))
           data
         },
         'preUrl' = {
