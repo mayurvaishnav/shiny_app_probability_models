@@ -1,4 +1,5 @@
 library(shiny)
+library(pdfetch)
 
 shinyServer(
   function(input, output, session) {
@@ -248,7 +249,24 @@ shinyServer(
           data
         },
         'preYahoo' = {
-          data = pdfetch_YAHOO(input$preYahoo, fields = c("open", "high", "low", "close", "adjclose", "volume"), from = as.Date("2019-01-01"))
+          fromDate = Sys.Date() - 1*365;
+          out = pdfetch_YAHOO(input$preYahoo, fields = c("open", "high", "low", "close", "adjclose", "volume"), from = fromDate)
+          stockData = data.frame(out)
+
+          tick_open <- paste(input$preYahoo, sep = "", ".open")
+          tick_high <- paste(input$preYahoo, sep = "", ".high")
+          tick_low <- paste(input$preYahoo, sep = "", ".low")
+          tick_volume <- paste(input$preYahoo, sep = "", ".volume")
+          tick_close <- paste(input$preYahoo, sep = "", ".close")
+
+          # Renaming Columns
+          names(stockData)[names(stockData) == tick_open] <- "Open"
+          names(stockData)[names(stockData) == tick_high] <- "High"
+          names(stockData)[names(stockData) == tick_low] <- "Low"
+          names(stockData)[names(stockData) == tick_volume] <- "Volumn"
+          names(stockData)[names(stockData) == tick_close] <- "Close"
+
+          data = na.omit(stockData)
           data
         }
       )
