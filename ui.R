@@ -196,6 +196,73 @@ library(markdown)
           )
         )
       )
+    ),
+
+    tabPanel("Hypothesis Test",
+      headerPanel("Hypothesis testing"),
+      sidebarLayout(
+        sidebarPanel(
+          selectInput("hpType", "Select Type",
+                      choices = c(
+                                  "Test of mean of population(s)" = "meanTest",
+                                  "Test of proportion of population(s)" = "proportionTest",
+                                  "Test of variance of population(s)" = "varianceTest",
+                                  "Test of goodness of fit" = "goodnessTest",
+                                  "Test of independence between two RVs" = "indTest"
+                                ),
+                      selected = "meanTest"
+          ),
+
+          selectInput("hpInputType", "Select Input",
+                      choices = c(
+                                  "File Input" = "hpFile",
+                                  "Inbuild Datasets" = "hpInbuild",
+                                  "URL" = "hpUrl",
+                                  "Yahoo Finance" = "hpYahoo"
+                                ),
+                      selected = "hpFile"
+          ),
+
+          conditionalPanel(
+            condition = "input.hpInputType == 'hpFile'",
+            # Input: Select a file ----
+            fileInput("datafile", "Choose CSV File",
+                    multiple = FALSE,
+                    accept = c("text/csv",
+                               "text/comma-separated-values,text/plain",
+                               ".csv"))
+          ),
+
+          conditionalPanel(
+            condition = "input.hpInputType == 'hpInbuild'",
+            selectInput("hpInbuildFile", "Select a Dataset",
+                        choices = ls("package:datasets")
+            )
+          ),
+
+          conditionalPanel(
+            condition = "input.hpInputType == 'hpUrl'",
+            textInput('hpUrl', 'Input URL', value="http://users.stat.ufl.edu/~winner/data/marij1.csv")
+          ),
+
+          conditionalPanel(
+            condition = "input.hpInputType == 'hpYahoo'",
+            textInput('hpYahoo', 'Enter Ticket No', value="CTSH")
+          ),
+
+          selectInput(inputId = "hp_columns", label = "Select a Column", choices = ""),
+
+          sliderInput("hpSLevel", "Significance Level" ,min=0, max=1, value = 0.05, step=0.01)
+        ),
+
+        mainPanel(
+          tabsetPanel(type = "tabs",
+                      tabPanel("Data", DT::dataTableOutput('hpextdata')),
+                      tabPanel("Result", verbatimTextOutput("testResult")),
+                      tabPanel("C Values", verbatimTextOutput("cValues"))
+          )
+        )
+      )
     )
   )
 # ))
