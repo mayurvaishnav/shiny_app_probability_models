@@ -252,7 +252,16 @@ library(markdown)
 
           selectInput(inputId = "hp_columns", label = "Select a Column", choices = ""),
 
-          sliderInput("hpSLevel", "Significance Level" ,min=0, max=1, value = 0.05, step=0.01)
+          sliderInput("hpSLevel", "Significance Level" ,min=0, max=1, value = 0.05, step=0.01),
+
+          selectInput("hpalternative", "Select Alternative",
+                      choices = c(
+                                  "Lower Tail" = "less",
+                                  "Upper Tail" = "greater",
+                                  "Two Sided" = "two.sided"
+                                ),
+                      selected = "less"
+          ),
         ),
 
         mainPanel(
