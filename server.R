@@ -323,7 +323,7 @@ shinyServer(
     hpData <- reactive({
       switch(input$hpInputType,
         'hpFile' = {
-          file1 <- input$datafile
+          file1 <- input$hpDatafile
           if (is.null(file1)) {
             return()
           }

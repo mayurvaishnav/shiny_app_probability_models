@@ -224,7 +224,7 @@ library(markdown)
           conditionalPanel(
             condition = "input.hpInputType == 'hpFile'",
             # Input: Select a file ----
-            fileInput("datafile", "Choose CSV File",
+            fileInput("hpDatafile", "Choose CSV File",
                     multiple = FALSE,
                     accept = c("text/csv",
                                "text/comma-separated-values,text/plain",
