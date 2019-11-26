@@ -206,9 +206,7 @@ library(markdown)
                       choices = c(
                                   "Test of mean of population(s)" = "meanTest",
                                   "Test of proportion of population(s)" = "proportionTest",
-                                  "Test of variance of population(s)" = "varianceTest",
-                                  "Test of goodness of fit" = "goodnessTest",
-                                  "Test of independence between two RVs" = "indTest"
+                                  "Test of variance of population(s)" = "varianceTest"
                                 ),
                       selected = "meanTest"
           ),
@@ -264,7 +262,7 @@ library(markdown)
           ),
 
           conditionalPanel(
-            condition = "input.hpalternative == 'two.sided'",
+            condition = "input.hpalternative == 'two.sided' && input.hpType == 'meanTest'",
             numericInput("hpMu", "Parameter mu in for Two sided" , value = 0),
           )
         ),

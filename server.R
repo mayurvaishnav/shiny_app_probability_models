@@ -402,6 +402,26 @@ shinyServer(
             print(paste('Higher Limit : ', U))
           }
         },
+
+        'proportionTest' = {
+
+          test = prop.test(x=sum(x), n=length(x), alternative=input$hpalternative)
+
+          if(test$p.value < input$hpAlpha){
+            decision='Reject H_0'
+          }else{
+            decision='Accept H_0'
+          }
+          print(paste('Decision: ', decision))
+
+          if(input$hpalternative == 'two.sided'){
+            p_hat=sum(x)/length(x)
+            L=p_hat-abs(qnorm(alpha/2))*sqrt(p_hat*(1-p_hat)/length(x))
+            U=p_hat+abs(qnorm(alpha/2))*sqrt(p_hat*(1-p_hat)/length(x))
+            print(paste('Lower Limit : ', L))
+            print(paste('Higher Limit : ', U))
+          }
+        },
       )
     })
   }
