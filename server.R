@@ -26,15 +26,6 @@ shinyServer(
             plot(x,dbinom(x, input$n, input$p))
           },
 
-  #        'multinomial' = {
-  #          par(mfrow=c(1,2))
-  #          d <- table(rmultinom(input$s, input$n, input$p))
-  #          barplot(d, col='red')
-  #          x=0:input$n
-  #          y=dmultinom(x, input$n, input$p)
-  #          plot(x,y, type='b')
-  #        },
-
           'poisson' = {
             par(mfrow=c(1,2))
             D=rpois(input$s, input$lam)

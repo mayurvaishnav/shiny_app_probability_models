@@ -24,7 +24,6 @@ library(markdown)
                         choices = c(
                           "Bernoulli" = "bernoulli",
                           "Binomial" = "binomial",
-                          "Multinomial" = "multinomial",
                           "Poisson" = "poisson",
                           "Geometric" = "geometric",
                           "Hypergeometric" = "hypergeometric"
@@ -44,12 +43,6 @@ library(markdown)
               numericInput("n", "Number of trails(n)", value = 10),
               sliderInput("p", "Probability of successful trail(p)", min=0, max=1, step = 0.01, value = 0.5)
             ),
-
-            #      conditionalPanel(
-            #        condition = "input.model == 'multinomial'",
-            #        numericInput("n", "Number of trails(n)", value = 10),
-            #        sliderInput("p", "Probability of successful trail(p)", min=0, max=1, step = 0.01, value = 0.5)
-            #      ),
 
             conditionalPanel(
               condition = "input.model == 'poisson'",
