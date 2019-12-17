@@ -121,10 +121,6 @@ shinyServer(
             summary(rbinom(input$s, input$n, input$p))
           },
 
-  #        'multinomial' = {
-  #          summary(rmultinom(input$s, input$n, input$p))
-  #        },
-
           'poisson' = {
             summary(rpois(input$s, input$lam))
           },
@@ -177,10 +173,6 @@ shinyServer(
           'binomial' = {
             c(rbinom(input$s, input$n, input$p))
           },
-
-  #        'multinomial' = {
-  #          c(rmultinom(input$s, input$n, input$p))
-  #        },
 
           'poisson' = {
             c(rpois(input$s, input$lam))
