@@ -133,9 +133,7 @@ shinyServer(
             summary(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
           }
         )
-      }
-
-      if(input$modelType == 'continuous') {
+      } else if(input$modelType == 'continuous') {
         switch (input$modelCont,
           'uniform' = {
             summary(runif(input$s,input$a, input$b))
@@ -186,9 +184,7 @@ shinyServer(
             c(rhyper(nn=input$s, m=input$m, n=input$n, k=rep(input$k, input$s)))
           }
         )
-      }
-
-      if(input$modelType == 'continuous') {
+      } else if(input$modelType == 'continuous') {
         switch (input$modelCont,
           'uniform' = {
             c(runif(input$s,input$a, input$b))
