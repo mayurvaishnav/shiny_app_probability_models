@@ -267,6 +267,25 @@ library(markdown)
           )
         )
       )
+    ),
+
+    tabPanel("About Us",
+      headerPanel("About Us"),
+
+      mainPanel(
+        tabsetPanel(type = "tabs",
+                    tabPanel("Mayur", 
+                      img(src='mayur_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
+                      HTML('<p>I am Mayur Vaishnav.</p>
+                        <p><a target="_blank" href="https://github.com/mayurvaishnav">GitHub</a>
+                        &nbsp; &nbsp; &nbsp; <a target="_blank" href="https://www.linkedin.com/in/mayur-vaishnav/">Linked In</a></p>
+                        ')
+                    ),
+                    tabPanel("Manmeet", verbatimTextOutput("manmeet_profile")),
+                    tabPanel("Hemlata", verbatimTextOutput("hemlata_profile")),
+                    tabPanel("Chirag", verbatimTextOutput("chirag_profile"))
+        )
+      )
     )
   )
 # ))

@@ -403,5 +403,9 @@ shinyServer(
         },
       )
     })
+
+    output$mayur_profile <- renderText({
+      'I am Mayur Vaishnav, highly motivated and passionate MSc student in Data Analytics. A wide range of knowledge in statistics, mathematics, and analytics. I have over 2 years of experience in the IT industry for developing web applications.'
+    })
   }
 )
