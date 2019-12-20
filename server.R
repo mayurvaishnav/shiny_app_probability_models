@@ -319,29 +319,44 @@ shinyServer(
       }
     })
 
+    # Storing the dataset into myData
     myData <- reactive({
+      # Switch case to the input type
       switch(input$predInputType,
+        # For File input
         'preFile' = {
+          # Storing hte input file in file1 variable
           file1 <- input$datafile
+          # Return null if file1 is empty
           if (is.null(file1)) {
             return()
           }
+          # Read the CSV file and store in data
           data = read.csv(file=file1$datapath)
           data
         },
+        # For Inbuild input
         'preInbuild' = {
+          # get the inbuild dataset and store in data
           data = data.frame(get(input$preInbuildFile))
           data
         },
+        # For URL input
         'preUrl' = {
+          # Read the dataset from URL
           data = read.csv(input$preUrl)
           data
         },
+        # For Yahoo Finance input
         'preYahoo' = {
+          # Set from date to one year from now
           fromDate = Sys.Date() - 1*365;
+          # Get output from Yahoo api
           out = pdfetch_YAHOO(input$preYahoo, fields = c("open", "high", "low", "close", "adjclose", "volume"), from = fromDate)
+          # Convert it into dataframe
           stockData = data.frame(out)
 
+          # Get the name of column name
           tick_open <- paste(input$preYahoo, sep = "", ".open")
           tick_high <- paste(input$preYahoo, sep = "", ".high")
           tick_low <- paste(input$preYahoo, sep = "", ".low")
@@ -355,6 +370,7 @@ shinyServer(
           names(stockData)[names(stockData) == tick_volume] <- "Volumn"
           names(stockData)[names(stockData) == tick_close] <- "Close"
 
+          # omit the empty value and store in data variable
           data = na.omit(stockData)
           data
         }
@@ -362,47 +378,69 @@ shinyServer(
 
     })
 
+    # Observe the change in myData and update the columns input
     observe({
+      # Update the columns input
       updateSelectInput(session, inputId = "pred_columns", choices = colnames(myData()))
     })
 
+    # Render the data with datatable
     output$extdata = DT::renderDataTable({
+      # Get the data
       extdata <- myData()
+      # Show the data in Datatable
       DT::datatable(extdata, options = list(lengthChange = TRUE))
     })
 
-
+    # Tab for show the prediction 
     output$prediction <- renderPrint({
 
-         print(paste('Selected Column : ',input$pred_columns))
-         df <- myData()
-         x <- df[,input$pred_columns]
+        # Show the column name that user have selected
+        print(paste('Selected Column : ',input$pred_columns))
+        # Store the data in df
+        df <- myData()
+        # Get the selected column from the dataset
+        x <- df[,input$pred_columns]
 
+      # switch case for probability models
       switch (input$predmodel,
+        # For Bermoulli
         'bernoulli' = {
+          # Mean of the data
           p=mean(x)
+          # Generate the random data based on that mean
           sim = rbinom(input$s, 1, p)
+          # Prediction base on that mean
           if(mean(sim) > 0.5){
             pred = 1
           } else {
             pred = 0
           }
+          # Display on the screen
           print(paste('Predicted Value : ', pred))
         },
 
+        # For Poisson
         'poisson' = {
+          # Display predicted value based on the random generated values
           print(paste('Predicted Value : ', mean(rpois(input$s, 1/mean(x)))))
         },
 
+        # For Uniform
         'uniform' = {
+          # Display predicted value based on the random generated values
           print(paste('Predicted Value : ', mean(rnorm(input$s))))
         },
 
+        # For Normal
         'normal' = {
+          # Display predicted value based on the random generated values
           print(paste('Predicted Value : ', mean(rnorm(input$s, mean(x), sd(x)))))
         },
 
+        # For Exponential
         'exponential' = {
+          # Display predicted value based on the random generated values
           print(paste('Predicted Value : ', mean(rexp(input$s, 1/mean(x)))))
         },
       )

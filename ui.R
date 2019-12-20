@@ -169,10 +169,15 @@ library(markdown)
       )
     ),
 
+    # Tab for Prediction
     tabPanel("Prediction",
+      # Header for this tab
       headerPanel("Prediction next value"),
+      # Sider bar which take the input
       sidebarLayout(
         sidebarPanel(
+          # Select for the probabilities models
+          # Default bernoulli  is selected
           selectInput("predmodel", "Select Model",
                       choices = c(
                                   "Bernoulli" = "bernoulli",
@@ -184,6 +189,8 @@ library(markdown)
                       selected = "bernoulli"
           ),
 
+          # Dropdown to select the input type.
+          # Default is File input
           selectInput("predInputType", "Select Input",
                       choices = c(
                                   "File Input" = "preFile",
@@ -194,6 +201,7 @@ library(markdown)
                       selected = "preFile"
           ),
 
+          # Conditional Panel to take parameter for file input
           conditionalPanel(
             condition = "input.predInputType == 'preFile'",
             # Input: Select a file ----
@@ -204,35 +212,43 @@ library(markdown)
                                ".csv"))
           ),
 
+          # Conditional Panel to take parameter for in build dataset input
           conditionalPanel(
             condition = "input.predInputType == 'preInbuild'",
+            # Drop down of all the input dataset present in R
             selectInput("preInbuildFile", "Select a Dataset",
                         choices = ls("package:datasets")
             )
           ),
 
+          # Conditional Panel to take parameter for in URL input
           conditionalPanel(
             condition = "input.predInputType == 'preUrl'",
+            # Text input to take data url from User
             textInput('preUrl', 'Input URL', value="http://users.stat.ufl.edu/~winner/data/marij1.csv")
           ),
 
+          # Conditional Panel to take parameter for in Yahoo Finance input
           conditionalPanel(
             condition = "input.predInputType == 'preYahoo'",
+            # Text input to take Ticket Number from User
             textInput('preYahoo', 'Enter Ticket No', value="CTSH")
           ),
 
+          # Drop down to select column of selected dataset
           selectInput(inputId = "pred_columns", label = "Select a Column", choices = ""),
 
-          sliderInput("s", "Number of simulated data" ,min=1, max=1000, value = 100),
-
-          conditionalPanel(
-            condition = "input.conmodel == 'uniform'"
-          )
+          # Slider to select the use of Number of simulated data for prediction
+          sliderInput("s", "Number of simulated data" ,min=1, max=1000, value = 100)
         ),
 
+        # Mail panel for this tab
         mainPanel(
+          # More tabs to display more information
           tabsetPanel(type = "tabs",
+                      # Tab that will shoW the data set in Data Table
                       tabPanel("Data", DT::dataTableOutput('extdata')),
+                      # Tab that will show the prediction
                       tabPanel("Prediction", verbatimTextOutput("prediction"))
           )
         )
