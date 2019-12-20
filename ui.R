@@ -255,19 +255,25 @@ library(markdown)
       )
     ),
 
+    # Tab for Hypothesis Test
     tabPanel("Hypothesis Test",
+      # Header for the tab
       headerPanel("Hypothesis testing"),
+      # Sidebar for the tab
       sidebarLayout(
         sidebarPanel(
+          # Dropdown for type of test
+          # Default is mean test
           selectInput("hpType", "Select Type",
                       choices = c(
                                   "Test of mean of population(s)" = "meanTest",
-                                  "Test of proportion of population(s)" = "proportionTest",
-                                  "Test of variance of population(s)" = "varianceTest"
+                                  "Test of proportion of population(s)" = "proportionTest"
                                 ),
                       selected = "meanTest"
           ),
 
+          # Dropdown to select the input type.
+          # Default is File input
           selectInput("hpInputType", "Select Input",
                       choices = c(
                                   "File Input" = "hpFile",
@@ -278,6 +284,7 @@ library(markdown)
                       selected = "hpFile"
           ),
 
+          # Conditional Panel to take parameter for file input
           conditionalPanel(
             condition = "input.hpInputType == 'hpFile'",
             # Input: Select a file ----
@@ -288,27 +295,36 @@ library(markdown)
                                ".csv"))
           ),
 
+          # Conditional Panel to take parameter for in build input
           conditionalPanel(
             condition = "input.hpInputType == 'hpInbuild'",
+            # Dropdown to select the listed inbuild datasets
             selectInput("hpInbuildFile", "Select a Dataset",
                         choices = ls("package:datasets")
             )
           ),
 
+          # Conditional Panel to take parameter for in build input
           conditionalPanel(
             condition = "input.hpInputType == 'hpUrl'",
+            # Text input to take url from user
             textInput('hpUrl', 'Input URL', value="http://users.stat.ufl.edu/~winner/data/marij1.csv")
           ),
 
+          # Conditional Panel to take parameter for in Yahoo Finance input
           conditionalPanel(
             condition = "input.hpInputType == 'hpYahoo'",
+            # Text input to take ticket no from user
             textInput('hpYahoo', 'Enter Ticket No', value="CTSH")
           ),
 
+          # Dropdown to select the column from listed columns
           selectInput(inputId = "hp_columns", label = "Select a Column", choices = ""),
 
+          # Slider to select Significance Level
           sliderInput("hpAlpha", "Significance Level" ,min=0, max=1, value = 0.05, step=0.01),
 
+          # Dropdown to select from Alternatives
           selectInput("hpalternative", "Select Alternative",
                       choices = c(
                                   "Lower Tail" = "less",
@@ -318,15 +334,21 @@ library(markdown)
                       selected = "less"
           ),
 
+          # Condition for alternative is two sided
           conditionalPanel(
             condition = "input.hpalternative == 'two.sided' && input.hpType == 'meanTest'",
+            # Numeric input to take mu parameter
             numericInput("hpMu", "Parameter mu in for Two sided" , value = 0),
           )
         ),
 
+        # Main panel of the tab
         mainPanel(
+          # More tabs for more info
           tabsetPanel(type = "tabs",
+                      # Tab to display datatable
                       tabPanel("Data", DT::dataTableOutput('hpextdata')),
+                      # Tab to display test result
                       tabPanel("Result", verbatimTextOutput("testResult"))
           )
         )

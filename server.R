@@ -447,29 +447,44 @@ shinyServer(
     })
 
 
+    # Storing the dataset into hpData
     hpData <- reactive({
+      # Switch case to the input type
       switch(input$hpInputType,
+        # For File input
         'hpFile' = {
+          # Storing hte input file in file1 variable
           file1 <- input$hpDatafile
+          # Return null if file1 is empty
           if (is.null(file1)) {
             return()
           }
+          # Read the CSV file and store in data
           data = read.csv(file=file1$datapath)
           data
         },
+        # For Inbuild input
         'hpInbuild' = {
+          # get the inbuild dataset and store in data
           data = data.frame(get(input$hpInbuildFile))
           data
         },
+        # For URL input
         'hpUrl' = {
+          # Read the dataset from URL
           data = read.csv(input$hpUrl)
           data
         },
+        # For Yahoo Finance input
         'hpYahoo' = {
+          # Set from date to one year from now
           fromDate = Sys.Date() - 1*365;
+          # Get output from Yahoo api
           out = pdfetch_YAHOO(input$hpYahoo, fields = c("open", "high", "low", "close", "adjclose", "volume"), from = fromDate)
+          # Convert it into dataframe
           stockData = data.frame(out)
 
+          # Get the name of column name
           tick_open <- paste(input$hpYahoo, sep = "", ".open")
           tick_high <- paste(input$hpYahoo, sep = "", ".high")
           tick_low <- paste(input$hpYahoo, sep = "", ".low")
@@ -483,6 +498,7 @@ shinyServer(
           names(stockData)[names(stockData) == tick_volume] <- "Volumn"
           names(stockData)[names(stockData) == tick_close] <- "Close"
 
+          # omit the empty value and store in data variable
           data = na.omit(stockData)
           data
         }
@@ -490,70 +506,96 @@ shinyServer(
 
     })
 
+    # Observe the change in myData and update the columns input
     observe({
+      # Update the columns input
       updateSelectInput(session, inputId = "hp_columns", choices = colnames(hpData()))
     })
 
+    # Render the data with datatable
     output$hpextdata = DT::renderDataTable({
+      # Get the data
       extdata <- hpData()
+      # Show the data in Datatable
       DT::datatable(extdata, options = list(lengthChange = TRUE))
     })
 
-
+    # Tab for the output and print the result
     output$testResult <- renderPrint({
 
+      # Get the data
       df <- hpData()
+      # Get the selected column in X variable
       x <- df[,input$hp_columns]
+      # Get the selected column in Y variable
       y <- df[,input$hp_columns_y]
 
+      # Switch for the type of test
       switch (input$hpType,
+        # For Mean test
         'meanTest' = {
-          mu = 0
+          # Set mu as according to alternative.
+          # Default set it to zero
+          mu = 1
           if(input$hpalternative == 'two.sided'){
             mu = input$hpMu
           }
 
+          # Run the test by t.test function
           test = t.test(x=x, mu=mu, alternative=input$hpalternative)
 
+          # Store the result in decision according the p.value
           if(test$p.value < input$hpAlpha){
             decision='Reject H_0'
           }else{
             decision='Accept H_0'
           }
 
+          # Display the result
           print(paste('Decision: ', decision))
+          # If the alternative is two sided
           if(input$hpalternative == 'two.sided'){
+            # Calculate the lower limit
             L=mean(x)-abs(qnorm(input$hpAlpha/2))*sd(x)/sqrt(length(x))
+            # Calculate the upper limit
             U=mean(x)+abs(qnorm(input$hpAlpha/2))*sd(x)/sqrt(length(x))
+            # Display the lower limit
             print(paste('Lower Limit : ', L))
+            # Display the upper limit
             print(paste('Higher Limit : ', U))
           }
         },
 
+        # For Proportion test
         'proportionTest' = {
 
+          # Run the test by prop.test function
           test = prop.test(x=sum(x), n=length(x), alternative=input$hpalternative)
 
+          # Compare the p.value and give decision
           if(test$p.value < input$hpAlpha){
             decision='Reject H_0'
           }else{
             decision='Accept H_0'
           }
+          # Display the decision
           print(paste('Decision: ', decision))
 
+          # Display the result
           if(input$hpalternative == 'two.sided'){
+            # Calculated the p_hat
             p_hat=sum(x)/length(x)
+            # Calculate the lower limit
             L=p_hat-abs(qnorm(alpha/2))*sqrt(p_hat*(1-p_hat)/length(x))
+            # Calculate the upper limit
             U=p_hat+abs(qnorm(alpha/2))*sqrt(p_hat*(1-p_hat)/length(x))
+            # Display the lower limit
             print(paste('Lower Limit : ', L))
+            # Display the upper limit
             print(paste('Higher Limit : ', U))
           }
         },
       )
-    })
-
-    output$mayur_profile <- renderText({
-      'I am Mayur Vaishnav, highly motivated and passionate MSc student in Data Analytics. A wide range of knowledge in statistics, mathematics, and analytics. I have over 2 years of experience in the IT industry for developing web applications.'
     })
   }
 )
