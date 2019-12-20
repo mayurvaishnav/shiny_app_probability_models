@@ -355,20 +355,67 @@ library(markdown)
       )
     ),
 
+    # Tab for About us
     tabPanel("About Us",
+      # Header for this tab
       headerPanel("About Us"),
 
-      tabsetPanel(type = "tabs",
-                  tabPanel("Mayur", 
-                    img(src='mayur_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
-                    HTML('<p>I am Mayur Vaishnav.</p>
-                      <p><a target="_blank" href="https://github.com/mayurvaishnav">GitHub</a>
-                      &nbsp; &nbsp; &nbsp; <a target="_blank" href="https://www.linkedin.com/in/mayur-vaishnav/">Linked In</a></p>
-                      ')
-                  ),
-                  tabPanel("Manmeet", verbatimTextOutput("manmeet_profile")),
-                  tabPanel("Hemlata", verbatimTextOutput("hemlata_profile")),
-                  tabPanel("Chirag", verbatimTextOutput("chirag_profile"))
+      # Fulid row to set 4 cards in display
+      fluidRow(
+        # First column for Mayur Vaishnav
+        column(3,
+          wellPanel(
+            h3("Mayur Vaishnav"),
+            img(src='mayur_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
+            HTML('<p>I am Mayur Vaishnav.</p>
+              '),
+            hr(),
+            verbatimTextOutput("actionOut"),
+            a("GitHub", class = "btn btn-primary btn-md", href = "https://github.com/mayurvaishnav"),
+            a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/mayur-vaishnav/")
+          )),
+        
+        # Column for Manmeet
+        column(3,
+          wellPanel(
+            h3("Manmeet"),
+            checkboxInput("checkbox", label = "Choice A", 
+                          value = TRUE),
+            hr(),
+            p("Current Value:", style = "color:#888888;"), 
+            verbatimTextOutput("checkboxOut"),
+            a("See Code", class = "btn btn-primary btn-md",  
+              href = "https://gallery.shinyapps.io/070-widget-checkbox/")
+          )),
+        
+        # Column for Hemlata
+        column(3,
+          wellPanel(
+            h3("Hemlata"),
+            checkboxInput("checkbox", label = "Choice A", 
+                          value = TRUE),
+            hr(),
+            p("Current Value:", style = "color:#888888;"), 
+            verbatimTextOutput("checkboxOut"),
+            a("See Code", class = "btn btn-primary btn-md",  
+              href = "https://gallery.shinyapps.io/070-widget-checkbox/")
+          )),
+        
+        # Column for Chirag
+        column(3,
+          wellPanel(
+            h3("Chirag"),
+            checkboxGroupInput("Chirag", 
+              label = h3("Checkbox group"), 
+              choices = list("Choice 1" = 1, "Choice 2" = 2, 
+                             "Choice 3" = 3),
+              selected = 1),
+            hr(),
+            p("Current Values:", style = "color:#888888;"), 
+            verbatimTextOutput("checkGroupOut"),
+            a("See Code", class = "btn btn-primary btn-md", 
+              href = "https://gallery.shinyapps.io/069-widget-check-group/")
+          ))
       )
     )
   )
