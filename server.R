@@ -361,6 +361,7 @@ shinyServer(
           tick_high <- paste(input$preYahoo, sep = "", ".high")
           tick_low <- paste(input$preYahoo, sep = "", ".low")
           tick_volume <- paste(input$preYahoo, sep = "", ".volume")
+          tick_adjclose <- paste(input$preYahoo, sep = "", ".adjclose")
           tick_close <- paste(input$preYahoo, sep = "", ".close")
 
           # Renaming Columns
@@ -368,6 +369,7 @@ shinyServer(
           names(stockData)[names(stockData) == tick_high] <- "High"
           names(stockData)[names(stockData) == tick_low] <- "Low"
           names(stockData)[names(stockData) == tick_volume] <- "Volumn"
+          names(stockData)[names(stockData) == tick_adjclose] <- "Adjclose"
           names(stockData)[names(stockData) == tick_close] <- "Close"
 
           # omit the empty value and store in data variable
@@ -489,6 +491,7 @@ shinyServer(
           tick_high <- paste(input$hpYahoo, sep = "", ".high")
           tick_low <- paste(input$hpYahoo, sep = "", ".low")
           tick_volume <- paste(input$hpYahoo, sep = "", ".volume")
+          tick_adjclose <- paste(input$preYahoo, sep = "", ".adjclose")
           tick_close <- paste(input$hpYahoo, sep = "", ".close")
 
           # Renaming Columns
@@ -496,6 +499,7 @@ shinyServer(
           names(stockData)[names(stockData) == tick_high] <- "High"
           names(stockData)[names(stockData) == tick_low] <- "Low"
           names(stockData)[names(stockData) == tick_volume] <- "Volumn"
+          names(stockData)[names(stockData) == tick_adjclose] <- "Adjclose"
           names(stockData)[names(stockData) == tick_close] <- "Close"
 
           # omit the empty value and store in data variable
