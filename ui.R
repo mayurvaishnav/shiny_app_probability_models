@@ -355,6 +355,76 @@ library(markdown)
       )
     ),
 
+    # Tab for GLM
+    tabPanel("GLM",
+      # Header for the tab
+      headerPanel("GML - Linear Regression"),
+      # Sidebar for the tab
+      sidebarLayout(
+        sidebarPanel(
+          # Dropdown to select the input type.
+          # Default is File input
+          selectInput("glmInputType", "Select Input",
+                      choices = c(
+                                  "File Input" = "glmFile",
+                                  "Inbuild Datasets" = "glmInbuild",
+                                  "URL" = "glmUrl",
+                                  "Yahoo Finance" = "glmYahoo"
+                                ),
+                      selected = "glmFile"
+          ),
+
+          # Conditional Panel to take parameter for file input
+          conditionalPanel(
+            condition = "input.glmInputType == 'glmFile'",
+            # Input: Select a file ----
+            fileInput("glmDatafile", "Choose CSV File",
+                    multiple = FALSE,
+                    accept = c("text/csv",
+                               "text/comma-separated-values,text/plain",
+                               ".csv"))
+          ),
+
+          # Conditional Panel to take parameter for in build input
+          conditionalPanel(
+            condition = "input.glmInputType == 'glmInbuild'",
+            # Dropdown to select the listed inbuild datasets
+            selectInput("glmInbuildFile", "Select a Dataset",
+                        choices = ls("package:datasets")
+            )
+          ),
+
+          # Conditional Panel to take parameter for in build input
+          conditionalPanel(
+            condition = "input.glmInputType == 'glmUrl'",
+            # Text input to take url from user
+            textInput('glmUrl', 'Input URL', value="http://users.stat.ufl.edu/~winner/data/marij1.csv")
+          ),
+
+          # Conditional Panel to take parameter for in Yahoo Finance input
+          conditionalPanel(
+            condition = "input.glmInputType == 'glmYahoo'",
+            # Text input to take ticket no from user
+            textInput('glmYahoo', 'Enter Ticket No', value="CTSH")
+          ),
+
+          # Dropdown to select the column from listed columns
+          selectInput(inputId = "glm_columns", label = "Select a Column", choices = "")
+        ),
+
+        # Main panel of the tab
+        mainPanel(
+          # More tabs for more info
+          tabsetPanel(type = "tabs",
+                      # Tab to display datatable
+                      tabPanel("Data", DT::dataTableOutput('glmextdata'))
+                      # Tab to display test result
+                      # tabPanel("Result", verbatimTextOutput("testResult"))
+          )
+        )
+      )
+    ),
+
     # Tab for About us
     tabPanel("About Us",
       # Header for this tab
@@ -373,49 +443,49 @@ library(markdown)
             verbatimTextOutput("actionOut"),
             a("GitHub", class = "btn btn-primary btn-md", href = "https://github.com/mayurvaishnav"),
             a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/mayur-vaishnav/")
-          )),
+          ))
         
         # Column for Manmeet
-        column(3,
-          wellPanel(
-            h3("Manmeet"),
-            checkboxInput("checkbox", label = "Choice A", 
-                          value = TRUE),
-            hr(),
-            p("Current Value:", style = "color:#888888;"), 
-            verbatimTextOutput("checkboxOut"),
-            a("See Code", class = "btn btn-primary btn-md",  
-              href = "https://gallery.shinyapps.io/070-widget-checkbox/")
-          )),
+        # column(3,
+        #   wellPanel(
+        #     h3("Manmeet"),
+        #     checkboxInput("checkbox", label = "Choice A", 
+        #                   value = TRUE),
+        #     hr(),
+        #     p("Current Value:", style = "color:#888888;"), 
+        #     verbatimTextOutput("checkboxOut"),
+        #     a("See Code", class = "btn btn-primary btn-md",  
+        #       href = "https://gallery.shinyapps.io/070-widget-checkbox/")
+        #   )),
         
         # Column for Hemlata
-        column(3,
-          wellPanel(
-            h3("Hemlata"),
-            checkboxInput("checkbox", label = "Choice A", 
-                          value = TRUE),
-            hr(),
-            p("Current Value:", style = "color:#888888;"), 
-            verbatimTextOutput("checkboxOut"),
-            a("See Code", class = "btn btn-primary btn-md",  
-              href = "https://gallery.shinyapps.io/070-widget-checkbox/")
-          )),
+        # column(3,
+        #   wellPanel(
+        #     h3("Hemlata"),
+        #     checkboxInput("checkbox", label = "Choice A", 
+        #                   value = TRUE),
+        #     hr(),
+        #     p("Current Value:", style = "color:#888888;"), 
+        #     verbatimTextOutput("checkboxOut"),
+        #     a("See Code", class = "btn btn-primary btn-md",  
+        #       href = "https://gallery.shinyapps.io/070-widget-checkbox/")
+        #   )),
         
         # Column for Chirag
-        column(3,
-          wellPanel(
-            h3("Chirag"),
-            checkboxGroupInput("Chirag", 
-              label = h3("Checkbox group"), 
-              choices = list("Choice 1" = 1, "Choice 2" = 2, 
-                             "Choice 3" = 3),
-              selected = 1),
-            hr(),
-            p("Current Values:", style = "color:#888888;"), 
-            verbatimTextOutput("checkGroupOut"),
-            a("See Code", class = "btn btn-primary btn-md", 
-              href = "https://gallery.shinyapps.io/069-widget-check-group/")
-          ))
+        # column(3,
+        #   wellPanel(
+        #     h3("Chirag"),
+        #     checkboxGroupInput("Chirag", 
+        #       label = h3("Checkbox group"), 
+        #       choices = list("Choice 1" = 1, "Choice 2" = 2, 
+        #                      "Choice 3" = 3),
+        #       selected = 1),
+        #     hr(),
+        #     p("Current Values:", style = "color:#888888;"), 
+        #     verbatimTextOutput("checkGroupOut"),
+        #     a("See Code", class = "btn btn-primary btn-md", 
+        #       href = "https://gallery.shinyapps.io/069-widget-check-group/")
+        #   ))
       )
     )
   )

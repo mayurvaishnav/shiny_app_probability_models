@@ -601,5 +601,81 @@ shinyServer(
         },
       )
     })
+
+
+    # Storing the dataset into glmData
+    glmData <- reactive({
+      # Switch case to the input type
+      switch(input$glmInputType,
+        # For File input
+        'glmFile' = {
+          # Storing hte input file in file1 variable
+          file1 <- input$glmDatafile
+          # Return null if file1 is empty
+          if (is.null(file1)) {
+            return()
+          }
+          # Read the CSV file and store in data
+          data = read.csv(file=file1$datapath)
+          data
+        },
+        # For Inbuild input
+        'glmInbuild' = {
+          # get the inbuild dataset and store in data
+          data = data.frame(get(input$glmInbuildFile))
+          data
+        },
+        # For URL input
+        'glmUrl' = {
+          # Read the dataset from URL
+          data = read.csv(input$glmUrl)
+          data
+        },
+        # For Yahoo Finance input
+        'glmYahoo' = {
+          # Set from date to one year from now
+          fromDate = Sys.Date() - 1*365;
+          # Get output from Yahoo api
+          out = pdfetch_YAHOO(input$glmYahoo, fields = c("open", "high", "low", "close", "adjclose", "volume"), from = fromDate)
+          # Convert it into dataframe
+          stockData = data.frame(out)
+
+          # Get the name of column name
+          tick_open <- paste(input$glmYahoo, sep = "", ".open")
+          tick_high <- paste(input$glmYahoo, sep = "", ".high")
+          tick_low <- paste(input$glmYahoo, sep = "", ".low")
+          tick_volume <- paste(input$glmYahoo, sep = "", ".volume")
+          tick_adjclose <- paste(input$preYahoo, sep = "", ".adjclose")
+          tick_close <- paste(input$glmYahoo, sep = "", ".close")
+
+          # Renaming Columns
+          names(stockData)[names(stockData) == tick_open] <- "Open"
+          names(stockData)[names(stockData) == tick_high] <- "High"
+          names(stockData)[names(stockData) == tick_low] <- "Low"
+          names(stockData)[names(stockData) == tick_volume] <- "Volumn"
+          names(stockData)[names(stockData) == tick_adjclose] <- "Adjclose"
+          names(stockData)[names(stockData) == tick_close] <- "Close"
+
+          # omit the empty value and store in data variable
+          data = na.omit(stockData)
+          data
+        }
+      )
+
+    })
+
+    # Observe the change in myData and update the columns input
+    observe({
+      # Update the columns input
+      updateSelectInput(session, inputId = "glm_columns", choices = colnames(glmData()))
+    })
+
+    # Render the data with datatable
+    output$glmextdata = DT::renderDataTable({
+      # Get the data
+      extdata <- glmData()
+      # Show the data in Datatable
+      DT::datatable(extdata, options = list(lengthChange = TRUE))
+    })
   }
 )
