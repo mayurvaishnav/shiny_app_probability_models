@@ -444,7 +444,7 @@ shinyServer(
         'exponential' = {
           # Display predicted value based on the random generated values
           print(paste('Predicted Value : ', mean(rexp(input$s, 1/mean(x)))))
-        },
+        }
       )
     })
 
@@ -598,10 +598,14 @@ shinyServer(
             # Display the upper limit
             print(paste('Higher Limit : ', U))
           }
-        },
+        }
       )
     })
 
+    # Set RMSE to 0
+    glmRMSE <- 0
+
+    glmValues <- reactiveValues()
 
     # Storing the dataset into glmData
     glmData <- reactive({
@@ -667,7 +671,8 @@ shinyServer(
     # Observe the change in myData and update the columns input
     observe({
       # Update the columns input
-      updateSelectInput(session, inputId = "glm_columns", choices = colnames(glmData()))
+      updateSelectInput(session, inputId = "glm_target", choices = colnames(glmData()))
+      updateSelectInput(session, inputId = "glm_independent", choices = colnames(glmData()))
     })
 
     # Render the data with datatable
@@ -676,6 +681,42 @@ shinyServer(
       extdata <- glmData()
       # Show the data in Datatable
       DT::datatable(extdata, options = list(lengthChange = TRUE))
+    })
+
+    output$glmPerf <- renderPlot({
+      df = na.omit(glmData())
+      tarIndData <- cbind(df[,input$glm_target], df[,input$glm_independent])
+      colnames(tarIndData) = c(input$glm_target, input$glm_independent)
+
+      colnames(tarIndData)[1] = 'Y'
+
+      set.seed(199)
+      n = nrow(tarIndData)
+      indexs = sample(n, n * (input$glmRatio/100))
+      trainSet = data.frame(tarIndData[indexs,])
+      testSet = data.frame(tarIndData[-indexs,])
+      actual = testSet$Y
+
+      pred_test = data.frame(testSet)
+
+      fullModel = glm(Y ~ ., data = trainSet, family = "gaussian")
+      glmValues$full <- fullModel
+
+      predFull = predict(fullModel, testSet[,input$glm_independent])
+
+      rmseFull = sqrt(sum((predFull - actual)^2)/(nrow(testSet)))
+
+      reduced.model = stepAIC(fullModel)
+      glmValues$full <- fullModel
+      glmValues$reduced <- reduced.model
+
+      pred_red = predict(reduced.model, testSet[,input$glm_independent])
+      rmse_red = sqrt(sum((pred_red - actual)^2)/(nrow(testSet)))
+
+      glmValues$rmse <- data.frame('Full' = rmseFull, 'Reduced' = rmse_red)
+
+      par(mfrow = c(1,2))
+      plot(actual, type = "o", col = "red", xlab="observations", ylab=input$glm_target, main="Full")
     })
   }
 )

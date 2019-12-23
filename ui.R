@@ -358,7 +358,7 @@ library(markdown)
     # Tab for GLM
     tabPanel("GLM",
       # Header for the tab
-      headerPanel("GML - Linear Regression"),
+      headerPanel("GLM - Linear Regression"),
       # Sidebar for the tab
       sidebarLayout(
         sidebarPanel(
@@ -409,7 +409,16 @@ library(markdown)
           ),
 
           # Dropdown to select the column from listed columns
-          selectInput(inputId = "glm_columns", label = "Select a Column", choices = "")
+          selectInput(inputId = "glm_target", label = "Select a Target Variable", choices = ""),
+
+          # Dropdown to select the column for independent variable
+          selectInput(inputId = "glm_independent", multiple = TRUE, label = "Select the independent variables", choices = ""),
+
+          # Slider input to take the ratio of train set
+          sliderInput('glmRatio', "Ratio for trainset", min=1, max=100, value=70),
+
+          # For display dynamic output
+          uiOutput('glmInputIndependent')
         ),
 
         # Main panel of the tab
@@ -417,9 +426,10 @@ library(markdown)
           # More tabs for more info
           tabsetPanel(type = "tabs",
                       # Tab to display datatable
-                      tabPanel("Data", DT::dataTableOutput('glmextdata'))
-                      # Tab to display test result
-                      # tabPanel("Result", verbatimTextOutput("testResult"))
+                      tabPanel("Data", DT::dataTableOutput('glmextdata')),
+                      tabPanel("Test/Prediction", plotOutput('glmperf')),
+                      # Tab to display test result,
+                      tabPanel("Prediction", DT::dataTableOutput('glmPrediction'))
           )
         )
       )
