@@ -465,36 +465,31 @@ library(markdown)
             hr(),
             verbatimTextOutput("actionOut"),
             a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/hemlata-mhapsekar-034298184/")
-          ))
+          )),
         
         # Column for Manmeet
-        # column(3,
-        #   wellPanel(
-        #     h3("Manmeet"),
-        #     checkboxInput("checkbox", label = "Choice A", 
-        #                   value = TRUE),
-        #     hr(),
-        #     p("Current Value:", style = "color:#888888;"), 
-        #     verbatimTextOutput("checkboxOut"),
-        #     a("See Code", class = "btn btn-primary btn-md",  
-        #       href = "https://gallery.shinyapps.io/070-widget-checkbox/")
-        #   )),
+        column(3,
+          wellPanel(
+            h3("Manmeet Kaur Sahota"),
+            img(src='manmeet_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
+            HTML('<p></p>
+              '),
+            hr(),
+            verbatimTextOutput("actionOut"),
+            a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/manmeet-kaur-sahota-0a54487a/")
+          )),
         
         # Column for Chirag
-        # column(3,
-        #   wellPanel(
-        #     h3("Chirag"),
-        #     checkboxGroupInput("Chirag", 
-        #       label = h3("Checkbox group"), 
-        #       choices = list("Choice 1" = 1, "Choice 2" = 2, 
-        #                      "Choice 3" = 3),
-        #       selected = 1),
-        #     hr(),
-        #     p("Current Values:", style = "color:#888888;"), 
-        #     verbatimTextOutput("checkGroupOut"),
-        #     a("See Code", class = "btn btn-primary btn-md", 
-        #       href = "https://gallery.shinyapps.io/069-widget-check-group/")
-        #   ))
+        column(3,
+          wellPanel(
+            h3("Chirag Wath"),
+            img(src='chirag_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
+            HTML('<p></p>
+              '),
+            hr(),
+            verbatimTextOutput("actionOut"),
+            a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/chirag-wath-895a96a4/")
+          ))
       )
     )
   )
