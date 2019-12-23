@@ -453,25 +453,24 @@ library(markdown)
             verbatimTextOutput("actionOut"),
             a("GitHub", class = "btn btn-primary btn-md", href = "https://github.com/mayurvaishnav"),
             a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/mayur-vaishnav/")
+          )),
+
+        # Column for Hemlata
+        column(3,
+          wellPanel(
+            h3("Hemlata Mhapsekar"),
+            img(src='hemlata_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
+            HTML('<p>I am a versatile and self motivated person with excellent programming skills.I have extensive knowledge in various programming languages such as C, C++, Core Java, SQL/PLSQL programming. During my leisure time I love watching movies,hanging out with friends.</p>
+              '),
+            hr(),
+            verbatimTextOutput("actionOut"),
+            a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/hemlata-mhapsekar-034298184/")
           ))
         
         # Column for Manmeet
         # column(3,
         #   wellPanel(
         #     h3("Manmeet"),
-        #     checkboxInput("checkbox", label = "Choice A", 
-        #                   value = TRUE),
-        #     hr(),
-        #     p("Current Value:", style = "color:#888888;"), 
-        #     verbatimTextOutput("checkboxOut"),
-        #     a("See Code", class = "btn btn-primary btn-md",  
-        #       href = "https://gallery.shinyapps.io/070-widget-checkbox/")
-        #   )),
-        
-        # Column for Hemlata
-        # column(3,
-        #   wellPanel(
-        #     h3("Hemlata"),
         #     checkboxInput("checkbox", label = "Choice A", 
         #                   value = TRUE),
         #     hr(),
