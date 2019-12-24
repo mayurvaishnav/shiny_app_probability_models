@@ -2,6 +2,7 @@
 library(shiny)
 # Use the pdfetch for yahoo finance
 library(pdfetch)
+library(MASS)
 
 # Server part of the application
 shinyServer(
@@ -683,7 +684,7 @@ shinyServer(
       DT::datatable(extdata, options = list(lengthChange = TRUE))
     })
 
-    output$glmPerf <- renderPlot({
+    output$glmPlot <- renderPlot({
       df = na.omit(glmData())
       tarIndData <- cbind(df[,input$glm_target], df[,input$glm_independent])
       colnames(tarIndData) = c(input$glm_target, input$glm_independent)
@@ -693,8 +694,8 @@ shinyServer(
       set.seed(199)
       n = nrow(tarIndData)
       indexs = sample(n, n * (input$glmRatio/100))
-      trainSet = data.frame(tarIndData[indexs,])
-      testSet = data.frame(tarIndData[-indexs,])
+      trainSet = na.omit(data.frame(tarIndData[indexs,]))
+      testSet = na.omit(data.frame(tarIndData[-indexs,]))
       actual = testSet$Y
 
       pred_test = data.frame(testSet)
@@ -717,6 +718,64 @@ shinyServer(
 
       par(mfrow = c(1,2))
       plot(actual, type = "o", col = "red", xlab="observations", ylab=input$glm_target, main="Full")
+      lines(predFull, type = "o", col = "blue")
+
+      legend(
+        "topleft",
+        lty=c(1,1),
+        col=c("red","blue"),
+        legend=c("Real","Predicted")
+      )
+
+      plot(actual, type = "o", col = "red", xlab="observations", ylab=input$glm_target, main="Reduced")
+      lines(predFull, type = "o", col = "blue")
+
+      legend(
+        "topleft",
+        lty=c(1,1),
+        col=c("red","blue"),
+        legend=c("Real","Predicted")
+      )
+    })
+
+    output$glmSelectedData <- DT::renderDataTable({
+      df <- glmData()
+      tarIndData <- cbind(df[,input$glm_target],df[,input$glm_independent])
+      colnames(tarIndData) = c(input$glm_target,input$glm_independent)
+
+      DT::datatable(tarIndData,options = list(lengthChange = TRUE))
+    })
+
+    output$glmRMSE <- DT::renderDataTable({
+      DT::datatable(glmValues$rmse,options=list(lengthChange=TRUE))
+    })
+
+    forecast_out <- reactive({
+      Var_Count <- length(input$glm_independent)
+      new_data <- as.numeric(paste(lapply(1:Var_Count,function(i){
+        inputName <- paste0(input$glm_independent[i])
+        input[[inputName]]
+      })))
+      input_data <- na.omit(data.frame(t(new_data)))
+
+      for (i in 1:Var_Count)
+      {
+        colnames(input_data)[i] <- input$glm_independent[i]
+      }
+
+      new_predict_full <- predict(glmValues$full,input_data)
+      new_predict_red <- predict(glmValues$reduced,input_data)
+
+      pred_data_new <- na.omit(data.frame(new_predict_full,new_predict_red))
+
+      colnames(pred_data_new)[1] <- paste('Full Mode -',input$glm_target)
+      colnames(pred_data_new)[2] <- paste('Reduced Mode -',input$glm_target)
+
+      return(pred_data_new)
+    })
+    
+    output$glmPrediction <- DT::renderDataTable({
+      DT::datatable(forecast_out(),options=list(lengthChange = TRUE))
     })
   }
 )
