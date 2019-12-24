@@ -504,15 +504,14 @@ library(markdown)
           )),
         
         # Column for Manmeet
-        # column(3,
-        #   wellPanel(
-        #     h3("Manmeet Kaur Sahota"),
-        #     img(src='manmeet_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
-        #     HTML('<p></p>
-        #       '),
-        #     hr(),
-        #     a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/manmeet-kaur-sahota-0a54487a/")
-        #   )),
+        column(3,
+          wellPanel(
+            h3("Manmeet Kaur Sahota"),
+            img(src='manmeet_photo.jpeg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
+            HTML('<p>A highly motivated and hardworking individual, currently pursuing my Master degree from Dublin Business School in Data Analytics. My professional experience has helped me grow as an inquisitive learner and an organized as well as happy-to-go person. I have experience in implementing end-to-end CRM solutions as well as working on BI Reports.</p>'),
+            hr(),
+            a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/manmeet-kaur-sahota-0a54487a/")
+          )),
         
         # Column for Chirag
         # column(3,
