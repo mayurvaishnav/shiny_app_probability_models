@@ -684,42 +684,64 @@ shinyServer(
       DT::datatable(extdata, options = list(lengthChange = TRUE))
     })
 
+    # For plotting the actual and predicted value
     output$glmPlot <- renderPlot({
+      # Creating the data frame of dataset
       df = na.omit(glmData())
+      # using the cbind function on both target and independent variable
       tarIndData <- cbind(df[,input$glm_target], df[,input$glm_independent])
+      # collecting the column names of the data frame
       colnames(tarIndData) = c(input$glm_target, input$glm_independent)
-
+      # Assigning Y to second column
       colnames(tarIndData)[1] = 'Y'
 
+      # Taking seed as 199
       set.seed(199)
+      # Storing the number of rows of traIndData in n
       n = nrow(tarIndData)
+      # Creating the indexes as per user input
       indexs = sample(n, n * (input$glmRatio/100))
+      # Making hte train set
       trainSet = na.omit(data.frame(tarIndData[indexs,]))
+      # Making hte test set
       testSet = na.omit(data.frame(tarIndData[-indexs,]))
+      # Assigning the actual set
       actual = testSet$Y
 
+      # Creating the data frame of test data
       pred_test = data.frame(testSet)
 
+      # Calculate the GLM on train set with Gaussian family
       fullModel = glm(Y ~ ., data = trainSet, family = "gaussian")
+      # Storing the full model in global variable in glmValues
       glmValues$full <- fullModel
 
+      # Predicting the full model
       predFull = predict(fullModel, testSet[,input$glm_independent])
-
       rmseFull = sqrt(sum((predFull - actual)^2)/(nrow(testSet)))
 
+      # Calculating the reduced model
       reduced.model = stepAIC(fullModel)
+      # Storing the full model in global variable in glmValues
       glmValues$full <- fullModel
+      # Storing the reduced model in global variable in glmValues
       glmValues$reduced <- reduced.model
 
+      # Predicting the reduced model
       pred_red = predict(reduced.model, testSet[,input$glm_independent])
+      # Finding the RMSE of reduced model
       rmse_red = sqrt(sum((pred_red - actual)^2)/(nrow(testSet)))
 
+      # Storing the rmse in global variable in glmValues
       glmValues$rmse <- data.frame('Full' = rmseFull, 'Reduced' = rmse_red)
 
+      # Dividing the page into 2 columns
       par(mfrow = c(1,2))
+      # plotting the first graph
       plot(actual, type = "o", col = "red", xlab="observations", ylab=input$glm_target, main="Full")
+      # plotting the lines for first graph
       lines(predFull, type = "o", col = "blue")
-
+      # writing the legend for first graph
       legend(
         "topleft",
         lty=c(1,1),
@@ -727,9 +749,11 @@ shinyServer(
         legend=c("Real","Predicted")
       )
 
+      # plotting the second graph
       plot(actual, type = "o", col = "red", xlab="observations", ylab=input$glm_target, main="Reduced")
+      # plotting the lines for Second graph
       lines(predFull, type = "o", col = "blue")
-
+      # writing the legend for second graph
       legend(
         "topleft",
         lty=c(1,1),
@@ -738,6 +762,7 @@ shinyServer(
       )
     })
 
+    # Datatable for selected columns
     output$glmSelectedData <- DT::renderDataTable({
       df <- glmData()
       tarIndData <- cbind(df[,input$glm_target],df[,input$glm_independent])
@@ -746,10 +771,12 @@ shinyServer(
       DT::datatable(tarIndData,options = list(lengthChange = TRUE))
     })
 
+    # Displaying the RMSE
     output$glmRMSE <- DT::renderDataTable({
       DT::datatable(glmValues$rmse,options=list(lengthChange=TRUE))
     })
 
+    # Reactive forecast for prediction
     forecast_out <- reactive({
       Var_Count <- length(input$glm_independent)
       new_data <- as.numeric(paste(lapply(1:Var_Count,function(i){
@@ -768,12 +795,13 @@ shinyServer(
 
       pred_data_new <- na.omit(data.frame(new_predict_full,new_predict_red))
 
-      colnames(pred_data_new)[1] <- paste('Full Mode -',input$glm_target)
-      colnames(pred_data_new)[2] <- paste('Reduced Mode -',input$glm_target)
+      colnames(pred_data_new)[1] <- paste('Full Mode -', input$glm_target)
+      colnames(pred_data_new)[2] <- paste('Reduced Mode -', input$glm_target)
 
       return(pred_data_new)
     })
-    
+
+    # Rendering the prediction
     output$glmPrediction <- DT::renderDataTable({
       DT::datatable(forecast_out(),options=list(lengthChange = TRUE))
     })

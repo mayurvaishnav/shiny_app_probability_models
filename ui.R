@@ -424,10 +424,13 @@ library(markdown)
           tabsetPanel(type = "tabs",
                       # Tab to display datatable
                       tabPanel("Data", DT::dataTableOutput('glmextdata')),
+                      # Tab to display selected colums in datatable
                       tabPanel("Selected Data", DT::dataTableOutput('glmSelectedData')),
+                      # Tab to display graph of actual and predicted data
                       tabPanel("Test/Prediction", plotOutput('glmPlot')),
+                      # Tab to display graph of full and reduced
                       tabPanel("RMSE", DT::dataTableOutput("glmRMSE")),
-                      # Tab to display test result,
+                      # Tab to display the prediction,
                       tabPanel("Prediction", DT::dataTableOutput('glmPrediction'))
           )
         )
