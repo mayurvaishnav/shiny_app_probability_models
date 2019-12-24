@@ -1,3 +1,10 @@
+### Application name : CA1 B9DA101 - Statistics for Data Analytics
+### Course : MSc (Data Analytics) - Sep 2019 - Group C
+### Developed by : Mayur Vaishnav(10529721) / Hemlata  Mhapsekar(10532113) / Manmeet Kaur(10532765) / Chirag Wath (10532863)
+### College : Dublin Business School
+### URL : https://mayurvaishnav.shinyapps.io/probability_models/
+
+
 # Use the shiny library
 library(shiny)
 # Use the markdown library
