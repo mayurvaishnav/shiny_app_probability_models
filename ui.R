@@ -514,16 +514,15 @@ library(markdown)
           )),
         
         # Column for Chirag
-        # column(3,
-        #   wellPanel(
-        #     h3("Chirag Wath"),
-        #     img(src='chirag_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
-        #     HTML('<p></p>
-        #       '),
-        #     hr(),
-        #     a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/chirag-wath-895a96a4/")
-        #   )
-        # )
+        column(3,
+          wellPanel(
+            h3("Chirag Wath"),
+            img(src='chirag_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
+            HTML('<p>I am young techie who loves learning new technology. I have worked as a Dba in Tcs for 2.5 years and well verse with technologies like Sql, Plsql, Java. I am learning R and this Shiny app is the start of the R journey. I love watching movies, playing games, explore new places and spend good family time in my personal life.</p>'),
+            hr(),
+            a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/chirag-wath-895a96a4/")
+          )
+        )
       )
     )
   )
