@@ -445,31 +445,29 @@ library(markdown)
       # Fulid row to set 4 cards in display
       fluidRow(
         # First column for Mayur Vaishnav
-        # column(3,
-        #   wellPanel(
-        #     h3("Mayur Vaishnav"),
-        #     img(src='mayur_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
-        #     HTML('<p>I am Mayur Vaishnav.</p>
-        #       '),
-        #     hr(),
-        #     verbatimTextOutput("actionOut"),
-        #     a("GitHub", class = "btn btn-primary btn-md", href = "https://github.com/mayurvaishnav"),
-        #     a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/mayur-vaishnav/")
-        #   )),
+        column(3,
+          wellPanel(
+            h3("Mayur Vaishnav"),
+            img(src='mayur_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
+            HTML('<p>Hi, I am a techie. I have wide range of knowledge in software development, and analytics. I have worked on Python Java, PHP, JS, R, SQL, and so on. I also like to design and develop web application on different platform. I have worked on some frameworks such as Laravel, ExpressJs, Django, and shiny. I like exploring new things.</p>
+              '),
+            hr(),
+            a("GitHub", class = "btn btn-primary btn-md", href = "https://github.com/mayurvaishnav"),
+            a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/mayur-vaishnav/")
+          )),
 
-        # # Column for Hemlata
-        # column(3,
-        #   wellPanel(
-        #     h3("Hemlata Mhapsekar"),
-        #     img(src='hemlata_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
-        #     HTML('<p>I am a versatile and self motivated person with excellent programming skills.I have extensive knowledge in various programming languages such as C, C++, Core Java, SQL/PLSQL programming. During my leisure time I love watching movies,hanging out with friends.</p>
-        #       '),
-        #     hr(),
-        #     verbatimTextOutput("actionOut"),
-        #     a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/hemlata-mhapsekar-034298184/")
-        #   )),
+        # Column for Hemlata
+        column(3,
+          wellPanel(
+            h3("Hemlata Mhapsekar"),
+            img(src='hemlata_photo.jpg', align = "middle", height = 150, width = 150, style="display: block; margin-left: auto; margin-right: auto; margin-top:50px; margin-bottom:50px;"),
+            HTML('<p>I am a versatile and self motivated person with excellent programming skills.I have extensive knowledge in various programming languages such as C, C++, Core Java, SQL/PLSQL programming. During my leisure time I love watching movies,hanging out with friends.</p>
+              '),
+            hr(),
+            a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/hemlata-mhapsekar-034298184/")
+          )),
         
-        # # Column for Manmeet
+        # Column for Manmeet
         # column(3,
         #   wellPanel(
         #     h3("Manmeet Kaur Sahota"),
@@ -477,11 +475,10 @@ library(markdown)
         #     HTML('<p></p>
         #       '),
         #     hr(),
-        #     verbatimTextOutput("actionOut"),
         #     a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/manmeet-kaur-sahota-0a54487a/")
         #   )),
         
-        # # Column for Chirag
+        # Column for Chirag
         # column(3,
         #   wellPanel(
         #     h3("Chirag Wath"),
@@ -489,7 +486,6 @@ library(markdown)
         #     HTML('<p></p>
         #       '),
         #     hr(),
-        #     verbatimTextOutput("actionOut"),
         #     a("Linked In", class = "btn btn-warning btn-md", href = "https://www.linkedin.com/in/chirag-wath-895a96a4/")
         #   )
         # )
